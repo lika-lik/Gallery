@@ -7,15 +7,9 @@
     tools:context=".activity.LoginActivity">
 
     <TextView
+        style="@style/header"
         android:id="@+id/textViewEnter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="monospace"
         android:text="@string/entrance"
-        android:textColor="@color/black"
-        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,7 +33,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:prefixText="+7">
+        app:prefixText="+7"
+        app:prefixTextColor="@color/black">
 
         <com.santalu.maskara.widget.MaskEditText
             android:id="@+id/inputLogin"
@@ -83,12 +78,7 @@
 
     <Button
         android:id="@+id/buttonEnter"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/black"
+        style="@style/button"
         android:text="@string/enter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

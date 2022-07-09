@@ -9,7 +9,7 @@ interface RetrofitServices {
 
     @FormUrlEncoded
     @POST("auth/login")
-    fun getUser(
+    fun userLogin(
         @Field("phone") phone: String,
         @Field("password") password: String): Call<LoginResponse>
 }

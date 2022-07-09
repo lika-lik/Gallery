@@ -1,6 +1,9 @@
 package com.example.gallery.models
 
+import com.google.gson.annotations.SerializedName
+
 data class LoginResponse(
-    val user_info: User,
+    @SerializedName("user_info")
+    val userInfo: User,
     val token: String
 )

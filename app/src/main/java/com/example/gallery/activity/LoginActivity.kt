@@ -1,7 +1,9 @@
 package com.example.gallery.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.EditText
@@ -9,7 +11,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.TextFieldDefaults
 import com.example.gallery.R
+import com.example.gallery.api.RetrofitClient
 import com.example.gallery.databinding.ActivityLoginBinding
+import com.example.gallery.models.LoginResponse
+import com.example.gallery.storage.SharedPrefManager
+import com.google.android.material.snackbar.Snackbar
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -22,17 +32,54 @@ class LoginActivity : AppCompatActivity() {
 
         binding.buttonEnter.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
-                validation()
+                if(!validation()){
+                    return
+                }
+                if (saveUser()) {
+                    val newIntent = Intent(applicationContext, ProfileActivity::class.java)
+                    startActivity(newIntent)
+
+                }
+            }
+        })
+    }
+
+    fun saveUser(): Boolean{
+        var error = false
+        val call: Call<LoginResponse> = RetrofitClient.retrofitServices.userLogin("+71234567890", "qwerty")
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                showError(getString(R.string.error_warning))
+                error = true
             }
 
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>
+            ) {
+                if (response.body() == null){
+                    showError(getString(R.string.login_warning))
+                    error = true
+                }else{
+                    SharedPrefManager.getInstance(application).saveUser(response.body()?.userInfo!!)
+                }
+            }
         })
+        return !error
+    }
+
+    fun showError(text: String){
+        val snackbar = Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG)
+        snackbar.setBackgroundTint(getColor(R.color.error))
+        snackbar.anchorView = binding.buttonEnter
+        snackbar.show()
+        binding.textFieldLogin.error = " "
+        binding.textFieldPassword.error = " "
     }
 
     fun validation(): Boolean{
         val pattern = Regex("[+]?[78]?[() 0-9-]+")
         val login: String = binding.inputLogin.text.toString()
         val password: String = binding.inputPassword.text.toString()
-        var validation: Boolean = true
+        var validation = true
         if (login.isEmpty()) {
             binding.textFieldLogin.error = getString(R.string.empty_field_warning)
             validation = false

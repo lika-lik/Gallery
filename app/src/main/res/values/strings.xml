@@ -4,7 +4,14 @@
     <string name="login">Логин</string>
     <string name="password">Пароль</string>
     <string name="enter">Войти</string>
+    <string name="exist">Выйти</string>
+    <string name="profile">Профиль</string>
+    <string name="city">Город</string>
+    <string name="phone">Телефон</string>
+    <string name="email">Почта</string>
     <string name="empty_field_warning">Поле не может быть пустым</string>
     <string name="phone_format_warning">Не верный формат номера телефона</string>
     <string name="password_length_warning">Пароль должен быть от 6 до 255 символов</string>
+    <string name="login_warning">Логин или пароль введен неправильно</string>
+    <string name="error_warning">Произошла ошибка, попробуйте зайти позже</string>
 </resources>
