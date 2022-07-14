@@ -35,9 +35,10 @@ class LoginActivity : AppCompatActivity() {
                 if(!validation()){
                     return
                 }
-                if (saveUser()) {
-                    val newIntent = Intent(applicationContext, ProfileActivity::class.java)
-                    startActivity(newIntent)
+                val saveOk = saveUser()
+                if (saveOk) {
+//                    val newIntent = Intent(applicationContext, HomeActivity::class.java)
+//                    startActivity(newIntent)
 
                 }
             }
@@ -55,11 +56,16 @@ class LoginActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>
             ) {
-                if (response.body() == null){
+                val body = response.body()
+                if (body == null){
                     showError(getString(R.string.login_warning))
                     error = true
                 }else{
-                    SharedPrefManager.getInstance(application).saveUser(response.body()?.userInfo!!)
+                    val sharedPrefManager = SharedPrefManager.getInstance(application)
+                    sharedPrefManager.saveUser(body.userInfo)
+                    sharedPrefManager.saveToken(body.token)
+                    val newIntent = Intent(applicationContext, HomeActivity::class.java)
+                    startActivity(newIntent)
                 }
             }
         })

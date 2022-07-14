@@ -6,6 +6,7 @@
     <string name="enter">Войти</string>
     <string name="exist">Выйти</string>
     <string name="profile">Профиль</string>
+    <string name="gallery">Галерея</string>
     <string name="city">Город</string>
     <string name="phone">Телефон</string>
     <string name="email">Почта</string>

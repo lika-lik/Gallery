@@ -1,6 +1,7 @@
 package com.example.gallery.storage
 
 import android.content.Context
+import android.util.Log
 import com.example.gallery.models.User
 
 class SharedPrefManager(val mCtx: Context) {
@@ -16,9 +17,19 @@ class SharedPrefManager(val mCtx: Context) {
                 sharedPreferences.getString("firstName", "") ?: "",
                 sharedPreferences.getString("lastName", "") ?: "",
                 sharedPreferences.getString("avatar", "") ?: "",
-                sharedPreferences.getString("about", "") ?: ""
-            )
+                sharedPreferences.getString("about", "") ?: "")
         }
+
+    val token: String
+        get() {
+            val sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+
+            Log.d("MY123", "get2 string     ${sharedPreferences.getString("token", "")}")
+            Log.d("MY123", "sharedPreferences2     ${sharedPreferences.toString()}")
+
+            return sharedPreferences.getString("token", "") ?: ""
+        }
+
 
     fun saveUser(user: User) {
 
@@ -36,6 +47,24 @@ class SharedPrefManager(val mCtx: Context) {
 
         editor.apply()
 
+    }
+
+    fun saveToken(token: String) {
+        val sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("token", token)
+        Log.d("MY123", "put string     $token")
+        editor.apply()
+        Log.d("MY123", "get1 string     ${sharedPreferences.getString("token", "")}")
+        Log.d("MY123", "sharedPreferences1     ${sharedPreferences.toString()}")
+    }
+
+
+    fun clear(){
+        val sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
     }
 
     companion object {
