@@ -1,20 +1,17 @@
 package com.example.gallery.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gallery.R
-import com.example.gallery.RecyclerViewAdapter
+import com.example.gallery.adapter.RecyclerViewAdapter
+import com.example.gallery.adapter.RecyclerViewListener
 import com.example.gallery.api.RetrofitClient
 import com.example.gallery.databinding.ActivityHomeBinding
-import com.example.gallery.databinding.ActivityProfileBinding
-import com.example.gallery.models.LoginResponse
 import com.example.gallery.models.Picture
-import com.example.gallery.models.PicturesResponse
-import com.example.gallery.models.User
 import com.example.gallery.storage.SharedPrefManager
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
@@ -33,6 +30,7 @@ class HomeActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = binding.recyclerViewGallery
         recyclerView.layoutManager = GridLayoutManager(this, 2)
 
+
         val sharedPrefManager = SharedPrefManager.getInstance(application)
         val call = RetrofitClient.retrofitServices.getPicture("Token ${sharedPrefManager.token}") // TODO: в настройки retrofit
         call.enqueue(object : Callback<List<Picture>> {
@@ -48,7 +46,16 @@ class HomeActivity : AppCompatActivity() {
                         loginError(sharedPrefManager)
                     }
                 }else{
-                    recyclerView.adapter = RecyclerViewAdapter(res)
+                    recyclerView.adapter = RecyclerViewAdapter(res, object: RecyclerViewListener{
+                        override fun startActivity(picture: Picture) {
+                            val newIntent =
+                                Intent(applicationContext, DetailPictureActivity::class.java)
+                            val mBundle = Bundle()
+                            mBundle.putSerializable("pictureKey", picture)
+                            newIntent.putExtras(mBundle)
+                            startActivity(newIntent)
+                        }
+                    })
                 }
             }
         })

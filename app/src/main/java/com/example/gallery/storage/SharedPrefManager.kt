@@ -2,6 +2,7 @@ package com.example.gallery.storage
 
 import android.content.Context
 import android.util.Log
+import com.example.gallery.models.Picture
 import com.example.gallery.models.User
 
 class SharedPrefManager(val mCtx: Context) {
@@ -23,10 +24,6 @@ class SharedPrefManager(val mCtx: Context) {
     val token: String
         get() {
             val sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
-
-            Log.d("MY123", "get2 string     ${sharedPreferences.getString("token", "")}")
-            Log.d("MY123", "sharedPreferences2     ${sharedPreferences.toString()}")
-
             return sharedPreferences.getString("token", "") ?: ""
         }
 
@@ -53,10 +50,7 @@ class SharedPrefManager(val mCtx: Context) {
         val sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("token", token)
-        Log.d("MY123", "put string     $token")
         editor.apply()
-        Log.d("MY123", "get1 string     ${sharedPreferences.getString("token", "")}")
-        Log.d("MY123", "sharedPreferences1     ${sharedPreferences.toString()}")
     }
 
 
