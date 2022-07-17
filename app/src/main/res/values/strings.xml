@@ -7,6 +7,8 @@
     <string name="exist">Выйти</string>
     <string name="profile">Профиль</string>
     <string name="gallery">Галерея</string>
+    <string name="main_nav">Главная</string>
+    <string name="favorites">Избраное</string>
     <string name="city">Город</string>
     <string name="phone">Телефон</string>
     <string name="email">Почта</string>
@@ -14,5 +16,8 @@
     <string name="phone_format_warning">Не верный формат номера телефона</string>
     <string name="password_length_warning">Пароль должен быть от 6 до 255 символов</string>
     <string name="login_warning">Логин или пароль введен неправильно</string>
-    <string name="error_warning">Произошла ошибка, попробуйте зайти позже</string>
+    <string name="internet_error">Отсутствует интернет-соединение. Попробуйте позже</string>
+    <string name="exist_question">Вы точно хотите выйти из приложения?</string>
+    <string name="exist_yes">ДА, ТОЧНО</string>
+    <string name="exist_no">НЕТ</string>
 </resources>

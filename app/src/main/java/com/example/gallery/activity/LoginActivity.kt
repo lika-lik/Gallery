@@ -1,15 +1,12 @@
 package com.example.gallery.activity
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
-import android.text.InputType
-import android.util.Log
 import android.view.View
-import android.view.View.OnFocusChangeListener
-import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.TextFieldDefaults
 import com.example.gallery.R
 import com.example.gallery.api.RetrofitClient
 import com.example.gallery.databinding.ActivityLoginBinding
@@ -35,12 +32,9 @@ class LoginActivity : AppCompatActivity() {
                 if(!validation()){
                     return
                 }
-                val saveOk = saveUser()
-                if (saveOk) {
-//                    val newIntent = Intent(applicationContext, HomeActivity::class.java)
-//                    startActivity(newIntent)
-
-                }
+                binding.progressBarEnter.visibility = View.VISIBLE
+                binding.textViewButton.visibility = View.GONE
+                saveUser()
             }
         })
     }
@@ -50,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
         val call: Call<LoginResponse> = RetrofitClient.retrofitServices.userLogin("+71234567890", "qwerty")
         call.enqueue(object : Callback<LoginResponse> {
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                showError(getString(R.string.error_warning))
+                showError(getString(R.string.internet_error))
                 error = true
             }
 
@@ -64,8 +58,10 @@ class LoginActivity : AppCompatActivity() {
                     val sharedPrefManager = SharedPrefManager.getInstance(application)
                     sharedPrefManager.saveUser(body.userInfo)
                     sharedPrefManager.saveToken(body.token)
-                    val newIntent = Intent(applicationContext, HomeActivity::class.java)
+                    val newIntent = Intent(applicationContext, MainActivity2::class.java)
                     startActivity(newIntent)
+                    binding.progressBarEnter.visibility = View.GONE
+                    binding.textViewButton.visibility = View.VISIBLE
                 }
             }
         })

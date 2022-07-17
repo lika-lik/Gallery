@@ -3,16 +3,11 @@ package com.example.gallery.activity
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.gallery.R
 import com.example.gallery.databinding.ActivityDetailPictureActivityBinding
-import com.example.gallery.databinding.ActivityProfileBinding
 import com.example.gallery.models.Picture
-import com.example.gallery.models.User
-import com.example.gallery.storage.SharedPrefManager
 import com.squareup.picasso.Picasso
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class DetailPictureActivity : AppCompatActivity() {

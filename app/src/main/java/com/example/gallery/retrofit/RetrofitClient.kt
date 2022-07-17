@@ -14,7 +14,5 @@ object RetrofitClient {
                 .build()
         }
         return retrofit!!
-
-        // TODO: delete this class
     }
 }
