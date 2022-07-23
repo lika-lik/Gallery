@@ -8,7 +8,8 @@
     <string name="profile">Профиль</string>
     <string name="gallery">Галерея</string>
     <string name="main_nav">Главная</string>
-    <string name="favorites">Избраное</string>
+    <string name="favorites">Мои избраные</string>
+    <string name="search">Поиск</string>
     <string name="city">Город</string>
     <string name="phone">Телефон</string>
     <string name="email">Почта</string>

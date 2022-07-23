@@ -25,10 +25,16 @@ class ProfileFragment : Fragment() {
     ): View? {
 
         binding = FragmentProfileBinding.inflate(layoutInflater)
+        init()
+
+        return binding.root
+    }
+
+    fun init(){
         val sharedPrefManager = activity?.application?.let { SharedPrefManager.getInstance(it) }
         var user = sharedPrefManager?.user
         if (user != null){
-            init(user)
+            initUser(user)
         }
 
         binding.buttonExist.setOnClickListener{
@@ -43,12 +49,9 @@ class ProfileFragment : Fragment() {
             })
             dialog.show(parentFragmentManager, "dialogExist")
         }
-
-        return binding.root
     }
 
-
-    private fun init(user: User){
+    private fun initUser(user: User){
         binding.textViewfFirstName.text = user.firstName
         binding.textViewLastName.text = user.lastName
         binding.textViewAbout.text = "\"${user.about}\""

@@ -1,12 +1,17 @@
 package com.example.gallery.storage
 
 import android.content.Context
-import android.util.Log
 import com.example.gallery.models.Picture
 import com.example.gallery.models.User
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
+import java.util.*
+
 
 class SharedPrefManager(val mCtx: Context) {
 
+    private val gson = Gson()
     val user: User
         get() {
             val sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
@@ -27,6 +32,15 @@ class SharedPrefManager(val mCtx: Context) {
             return sharedPreferences.getString("token", "") ?: ""
         }
 
+    val favorites: MutableList<Picture>
+        get() {
+            val sharedPreferences =
+                mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+            val favoritesGson = sharedPreferences.getString("favorites", "") ?: ""
+            val listType: Type = object : TypeToken<MutableList<Picture>>() {}.type
+            return gson.fromJson(favoritesGson, listType) ?: listOf<Picture>().toMutableList()
+        }
+
 
     fun saveUser(user: User) {
 
@@ -44,6 +58,27 @@ class SharedPrefManager(val mCtx: Context) {
 
         editor.apply()
 
+    }
+
+    fun addFavorite(picture: Picture){
+        val sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        val list = favorites
+        list.add(0, picture)
+        editor.putString("favorites", (gson.toJson(list)))
+        editor.commit()
+
+    }
+
+    fun removeFavorite(picture: Picture){
+        val sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        val list = favorites
+        list.remove(picture)
+        editor.putString("favorites", (gson.toJson(list)))
+        editor.commit()
     }
 
     fun saveToken(token: String) {

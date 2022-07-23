@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textViewDateDetailRv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="@color/material_on_primary_disabled"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewHeaderDetailRv"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewDetailRv"
+        app:layout_constraintTop_toTopOf="@+id/textViewHeaderDetailRv" />
+
+    <ImageView
+        android:id="@+id/imageViewDetailRv"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/textViewHeaderDetailRv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textViewHeaderDetailRv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/imageViewDetailRv"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDetailRv" />
+
+    <TextView
+        android:id="@+id/textViewDescrDetailRv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:maxLines="1"
+        android:text="TextView"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/imageViewDetailRv"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHeaderDetailRv" />
+
+    <androidx.appcompat.widget.AppCompatToggleButton
+        android:id="@+id/buttonFavoriteRecyclerViewFavorites"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/ic_add_to_favorite"
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintEnd_toEndOf="@+id/imageViewDetailRv"
+        app:layout_constraintTop_toTopOf="@+id/imageViewDetailRv" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

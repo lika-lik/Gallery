@@ -2,15 +2,20 @@ package com.example.gallery.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gallery.R
 import com.example.gallery.activity.DetailPictureActivity
 import com.example.gallery.activity.LoginActivity
+import com.example.gallery.adapter.FavoriteControllerIml
 import com.example.gallery.adapter.RecyclerViewAdapter
 import com.example.gallery.adapter.RecyclerViewListener
 import com.example.gallery.api.RetrofitClient
@@ -43,11 +48,17 @@ class HomeFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recycler_view_gallery)
         recyclerView.layoutManager = GridLayoutManager(activity?.applicationContext, 2)
 
-        val sharedPrefManager = activity?.applicationContext?.let { SharedPrefManager.getInstance(it) }
-        val call = RetrofitClient.retrofitServices.getPicture("Token ${sharedPrefManager?.token}") // TODO: в настройки retrofit
+        init()
+    }
+
+    private fun init(){
+        val sharedPrefManager =
+            activity?.applicationContext?.let { SharedPrefManager.getInstance(it) }
+        val call =
+            RetrofitClient.retrofitServices.getPicture("Token ${sharedPrefManager?.token}")
         call.enqueue(object : Callback<List<Picture>> {
             override fun onFailure(call: Call<List<Picture>>, t: Throwable) {
-                // TODO: onFailure
+                loginError(sharedPrefManager)
             }
 
             override fun onResponse(
@@ -56,33 +67,39 @@ class HomeFragment : Fragment() {
                 val res = response.body()
                 if (res == null) {
                     if (response.code() == 401) {
-                        if (sharedPrefManager != null) {
-                            loginError(sharedPrefManager)
-                        }
+                        loginError(sharedPrefManager)
                     }
                 } else {
-                    recyclerView.adapter = RecyclerViewAdapter(res, object : RecyclerViewListener {
-                        override fun startActivity(picture: Picture) {
-                            val newIntent =
-                                Intent(activity, DetailPictureActivity::class.java)
-                            val mBundle = Bundle()
-                            mBundle.putSerializable("pictureKey", picture)
-                            newIntent.putExtras(mBundle)
-                            activity?.startActivity(newIntent)
-                        }
-                    })
+                    recyclerView.adapter = RecyclerViewAdapter(
+                        res,
+                        object : RecyclerViewListener {
+                            override fun startActivity(picture: Picture) {
+                                openPicture(picture)
+                            }
+                        },
+                        FavoriteControllerIml(sharedPrefManager, requireContext())
+                    )
                 }
             }
         })
     }
 
-    private fun loginError(sharedPrefManager: SharedPrefManager) {
-        val text = "Необходимо перезайти в свой аккаунт"
+    fun openPicture(picture: Picture){
+        val newIntent =
+            Intent(activity, DetailPictureActivity::class.java)
+        val mBundle = Bundle()
+        mBundle.putSerializable("pictureKey", picture)
+        newIntent.putExtras(mBundle)
+        activity?.startActivity(newIntent)
+    }
+
+    private fun loginError(sharedPrefManager: SharedPrefManager?) {
+        val text = getString(R.string.login_warning)
         val recyclerView: View = requireActivity().findViewById(R.id.recycler_view_gallery)
         val snackbar = Snackbar.make(recyclerView, text, Snackbar.LENGTH_LONG)
         snackbar.show()
 
-        sharedPrefManager.clear()
+        sharedPrefManager?.clear()
 
         val newIntent = Intent(activity, LoginActivity::class.java)
         activity?.startActivity(newIntent)
